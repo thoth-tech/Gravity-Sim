@@ -20,7 +20,7 @@ class body
         float getMass();
 
         virtual void update(vector<body*> objects);
-        void draw();
+        virtual void draw();
 
     
 };
@@ -28,16 +28,22 @@ class body
 class dynamic : public body 
 {
     protected:
+        vector<point_2d> linePoints;
+        int lineLen;
         vector_2d gravity(body obj);
+
     public:
-        dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour);
-        void update(vector<body*> objects);
+        dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length);
+        void update(vector<body *> objects);
+        void draw();
 };
 
 class staticObj : public body
 {
     protected:
+
     public:
         staticObj(float _mass, point_2d _location, vector_2d _velocity, color _colour);
-        virtual void update(vector<body *> objects);
+        void update(vector<body *> objects);
+        void draw();
 };

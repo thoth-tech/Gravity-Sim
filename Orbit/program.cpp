@@ -5,9 +5,9 @@ int main()
     open_window("newtonian gravity sim", 16*100, 9*100);
 
     //staticObj statObj = staticObj(300, point_at(800, 450), vector_from_angle(0, 0), COLOR_BRIGHT_GREEN);
-    dynamic statObj = dynamic(300, point_at(800, 450), vector_from_angle(0, 0), COLOR_BRIGHT_GREEN);
-    dynamic dynObj1 = dynamic(20, point_at(800, 550), vector_from_angle(0, 1.5), COLOR_AZURE);
-    dynamic dynObj2 = dynamic(20, point_at(800, 300), vector_from_angle(0, 1), COLOR_RED);
+    dynamic statObj = dynamic(300, point_at(800, 450), vector_from_angle(0, 0), COLOR_BRIGHT_GREEN, 100);
+    dynamic dynObj1 = dynamic(20, point_at(800, 550), vector_from_angle(0, 1.5), COLOR_AZURE, 1000);
+    dynamic dynObj2 = dynamic(20, point_at(800, 300), vector_from_angle(0, 1), COLOR_RED, 1000);
 
     vector<body*> objects = {&statObj, &dynObj1, &dynObj2};
 

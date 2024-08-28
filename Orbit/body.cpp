@@ -26,9 +26,7 @@ void body::update(vector<body *> objects)
 
 void body::draw()
 {
-    location.x = location.x + velocity.x;
-    location.y = location.y + velocity.y;
-    fill_circle(colour, circle_at(location, radius));
+    return;
 }
 
 staticObj::staticObj(float _mass, point_2d _location, vector_2d _velocity, color _colour) : body(_mass, _location, _velocity, _colour) {}
@@ -38,7 +36,17 @@ void staticObj::update(vector<body *> objects)
     return;
 }
 
-dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour) : body(_mass, _location, _velocity, _colour) {}
+void staticObj::draw()
+{
+    location.x = location.x + velocity.x;
+    location.y = location.y + velocity.y;
+    fill_circle(colour, circle_at(location, radius));
+}
+
+dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length) : body(_mass, _location, _velocity, _colour) 
+{
+    lineLen = line_length;
+}
 
 void dynamic::update(vector<body*> objects)
 {
@@ -51,6 +59,11 @@ void dynamic::update(vector<body*> objects)
         {
             velocity = vector_add(velocity, gravity((*objects[i])));
         }
+    }
+    linePoints.insert(linePoints.begin(), location);
+    if (linePoints.size() > lineLen)
+    {
+        linePoints.resize(lineLen);
     }
     return;
 }
@@ -69,4 +82,18 @@ vector_2d dynamic::gravity(body obj)
     float gravForce = GRAV_CONST * ((obj.getMass())/(dist * dist));
 
     return vector_from_angle(angle, gravForce/mass);
+}
+
+void dynamic::draw()
+{
+    location.x = location.x + velocity.x;
+    location.y = location.y + velocity.y;\
+    for (int i; i < linePoints.size(); i++)
+    {
+        if (i > 0)
+        {
+            draw_line(colour, line_from(linePoints[i-1], linePoints[i]));
+        }
+    }
+    fill_circle(colour, circle_at(location, radius));
 }
