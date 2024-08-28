@@ -43,18 +43,29 @@ void staticObj::draw()
     fill_circle(colour, circle_at(location, radius));
 }
 
-dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length) : body(_mass, _location, _velocity, _colour) 
+dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length, bool _bounce) : body(_mass, _location, _velocity, _colour) 
 {
     lineLen = line_length;
+    bounce = _bounce;
 }
 
 void dynamic::update(vector<body*> objects)
 {
     for (int i = 0; i < size(objects); i++)
     {
-        if ((location.x == (*objects[i]).getLocation().x && location.y == (*objects[i]).getLocation().y))
+        if (bounce)
         {
+            if (location.x > SCREEN_WIDTH || location.x < 0)
+            {
+                velocity.x = velocity.x * -1;
+            }
+            if (location.y > SCREEN_HEIGHT || location.y < 0)
+            {
+                velocity.y = velocity.y * -1;
+            }
         }
+
+        if ((location.x == (*objects[i]).getLocation().x && location.y == (*objects[i]).getLocation().y)) {}
         else 
         {
             velocity = vector_add(velocity, gravity((*objects[i])));
@@ -79,7 +90,7 @@ vector_2d dynamic::gravity(body obj)
 
     //calculations based upon the inverse square law
     float dist = point_point_distance(location, obj.getLocation());
-    float gravForce = GRAV_CONST * ((obj.getMass())/(dist * dist));
+    float gravForce = GRAV_CONST * ((mass*obj.getMass())/(dist * dist));
 
     return vector_from_angle(angle, gravForce/mass);
 }
