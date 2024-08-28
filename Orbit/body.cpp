@@ -29,6 +29,16 @@ void body::draw()
     return;
 }
 
+string body::getSpeedString() 
+{
+    return "this should not show up";
+}
+
+color body::getColor()
+{
+    return colour;
+}
+
 staticObj::staticObj(float _mass, point_2d _location, vector_2d _velocity, color _colour) : body(_mass, _location, _velocity, _colour) {}
 
 void staticObj::update(vector<body *> objects)
@@ -41,6 +51,11 @@ void staticObj::draw()
     location.x = location.x + velocity.x;
     location.y = location.y + velocity.y;
     fill_circle(colour, circle_at(location, radius));
+}
+
+string staticObj::getSpeedString()
+{
+    return "N/A";
 }
 
 dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length, bool _bounce) : body(_mass, _location, _velocity, _colour) 
@@ -107,4 +122,9 @@ void dynamic::draw()
         }
     }
     fill_circle(colour, circle_at(location, radius));
+}
+
+string dynamic::getSpeedString()
+{
+    return std::to_string(vector_magnitude(velocity));
 }
