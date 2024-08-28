@@ -9,6 +9,7 @@ int main()
     FallingObj testobj;
     testobj.location = point_at(400,300);
     testobj.size = 100;
+    testobj.colour = COLOR_BRIGHT_GREEN;
 
     while (!key_typed(ESCAPE_KEY) && !quit_requested())
     {
@@ -16,6 +17,7 @@ int main()
         clear_screen(COLOR_WHITE);
         process_events();
         testobj.update();
+        testobj.draw();
         refresh_screen(REFRESH_RATE);
     }
     return 0;
