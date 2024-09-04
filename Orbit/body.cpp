@@ -1,5 +1,11 @@
 #include "body.h"
 
+gravWell::gravWell(point_2d _location, float _mass)
+{
+    location = _location;
+    mass = _mass;
+}
+
 body::body(float _mass, point_2d _location, vector_2d _velocity, color _colour)
 {
     mass = _mass;
@@ -19,7 +25,7 @@ float body::getMass()
     return mass;
 }
 
-void body::update(vector<body *> objects)
+void body::update(gravWell object)
 {
     return;
 }
@@ -41,7 +47,7 @@ color body::getColor()
 
 staticObj::staticObj(float _mass, point_2d _location, vector_2d _velocity, color _colour) : body(_mass, _location, _velocity, _colour) {}
 
-void staticObj::update(vector<body *> objects)
+void staticObj::update(gravWell object)
 {
     return;
 }
@@ -58,63 +64,78 @@ string staticObj::getSpeedString()
     return "N/A";
 }
 
-dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length, bool _bounce) : body(_mass, _location, _velocity, _colour) 
+dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length, float _bounce, double _drag) : body(_mass, _location, _velocity, _colour) 
 {
     lineLen = line_length;
     bounce = _bounce;
+    dragCoef = _drag;
 }
 
-void dynamic::update(vector<body*> objects)
+void dynamic::update(gravWell object)
 {
-    for (int i = 0; i < size(objects); i++)
+    if (bounce > 0)
     {
-        if (bounce)
+        if (location.x > SCREEN_WIDTH && velocity.x > 0)
         {
-            if (location.x > SCREEN_WIDTH || location.x < 0)
-            {
-                velocity.x = velocity.x * -1;
-            }
-            if (location.y > SCREEN_HEIGHT || location.y < 0)
-            {
-                velocity.y = velocity.y * -1;
-            }
+            velocity.x = velocity.x * -bounce;
+            velocity.y = velocity.y * bounce;
+        }
+        if (location.x < 0 && velocity.x < 0)
+        {
+            velocity.x = velocity.x * -bounce;
+            velocity.y = velocity.y * bounce;
+        }
+        if (location.y > SCREEN_HEIGHT && velocity.y > 0)
+        {
+            velocity.x = velocity.x * bounce;
+            velocity.y = velocity.y * -bounce;
+        }
+        if (location.y < 0 && velocity.y < 0)
+        {
+            velocity.x = velocity.x * bounce;
+            velocity.y = velocity.y * -bounce;
         }
 
-        if ((location.x == (*objects[i]).getLocation().x && location.y == (*objects[i]).getLocation().y)) {}
+        if ((location.x == object.location.x && location.y == object.location.y)) {}
         else 
         {
-            velocity = vector_add(velocity, gravity((*objects[i])));
+            velocity = vector_add(velocity, gravity(object));
+            velocity = vector_add(velocity, drag());
         }
     }
+    return;
+}
+
+vector_2d dynamic::gravity(gravWell obj)
+{
+    float angle = point_point_angle(location, obj.location);
+    float dist = point_point_distance(location, obj.location);
+    
+    // calculations based upon the inverse square law
+    double gravForce = GRAV_CONST * ((mass * obj.mass)/(dist * dist));
+
+    return vector_from_angle(angle, gravForce/mass);
+}
+
+vector_2d dynamic::drag()
+{
+    double speed = vector_magnitude(velocity);
+    double angle = vector_angle(velocity);
+    double area = 3.14 * (radius * radius); // bodies are assumed spherical no need for a particularly accurate definition of pi
+    double dragForce = DENSITY*(speed * speed) * dragCoef * area;
+    return vector_invert(vector_from_angle(angle, dragForce/mass));
+}
+
+void dynamic::draw()
+{
     linePoints.insert(linePoints.begin(), location);
     if (linePoints.size() > lineLen)
     {
         linePoints.resize(lineLen);
     }
-    return;
-}
-
-vector_2d dynamic::gravity(body obj)
-{
-    float angle = point_point_angle(location, obj.getLocation());
-
-    //float cogX = ((location.x * mass) + (obj.getLocation().x * obj.getMass())) / (mass + obj.getMass());
-    //float cogY = ((location.y * mass) + (obj.getLocation().y * obj.getMass())) / (mass + obj.getMass());
-
-    //float dist = point_point_distance(location, point_at(cogX, cogY));
-
-    //calculations based upon the inverse square law
-    float dist = point_point_distance(location, obj.getLocation());
-    float gravForce = GRAV_CONST * ((mass*obj.getMass())/(dist * dist));
-
-    return vector_from_angle(angle, gravForce/mass);
-}
-
-void dynamic::draw()
-{
     location.x = location.x + velocity.x;
-    location.y = location.y + velocity.y;\
-    for (int i; i < linePoints.size(); i++)
+    location.y = location.y + velocity.y;
+    for (int i = 0; i < linePoints.size(); i++)
     {
         if (i > 0)
         {
