@@ -23,7 +23,7 @@ int main()
 
     vector<body*> objects = {statObj, dynObj1, dynObj2, dynObj3, dynObj4};
 
-    manager gravSystem = manager(objects);
+    gravManager gravSystem = gravManager(objects);
 
     int clickMass = 0;
 

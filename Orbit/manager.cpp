@@ -1,18 +1,18 @@
 #include "body.h"
 
-manager::manager(vector<body *> objects)
+gravManager::gravManager(vector<body *> objects)
 {
     bodies = objects;
     nextFrame.clear();
     currentFrame.clear();
 };
 
-void manager::addForce(gravWell grav)
+void gravManager::addForce(gravWell grav)
 {
     nextFrame.push_back(grav);
 };
 
-void manager::update()
+void gravManager::update()
 {
     //currentFrame = nextFrame;
     //nextFrame.clear();

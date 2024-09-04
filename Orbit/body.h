@@ -37,7 +37,7 @@ public:
     virtual string getSpeedString();
 };
 
-class manager
+class gravManager
 {
 protected:
     vector<body *> bodies;
@@ -45,7 +45,7 @@ protected:
     vector<gravWell> currentFrame;
 
 public:
-    manager(vector<body *> objects);
+    gravManager(vector<body *> objects);
     void addForce(gravWell grav);
     void update();
 };
