@@ -25,8 +25,9 @@ void gravManager::update()
     {
         for (int j = 0; j < size(nextFrame); j++)
         {
-            (*bodies[i]).update(nextFrame[j]);
+            (*bodies[i]).updateVector(nextFrame[j]);
         }
+        (*bodies[i]).updatePos();
         (*bodies[i]).draw();
     }
     nextFrame.clear();

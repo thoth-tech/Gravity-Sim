@@ -25,7 +25,7 @@ float body::getMass()
     return mass;
 }
 
-void body::update(gravWell object)
+void body::updateVector(gravWell object)
 {
     return;
 }
@@ -45,17 +45,21 @@ color body::getColor()
     return colour;
 }
 
+void body::updatePos()
+{
+    location.x = location.x + velocity.x;
+    location.y = location.y + velocity.y;
+}
+
 staticObj::staticObj(float _mass, point_2d _location, vector_2d _velocity, color _colour) : body(_mass, _location, _velocity, _colour) {}
 
-void staticObj::update(gravWell object)
+void staticObj::updateVector(gravWell object)
 {
     return;
 }
 
 void staticObj::draw()
 {
-    location.x = location.x + velocity.x;
-    location.y = location.y + velocity.y;
     fill_circle(colour, circle_at(location, radius));
 }
 
@@ -71,7 +75,7 @@ dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _co
     dragCoef = _drag;
 }
 
-void dynamic::update(gravWell object)
+void dynamic::updateVector(gravWell object)
 {
     if (bounce > 0)
     {
@@ -133,8 +137,6 @@ void dynamic::draw()
     {
         linePoints.resize(lineLen);
     }
-    location.x = location.x + velocity.x;
-    location.y = location.y + velocity.y;
     for (int i = 0; i < linePoints.size(); i++)
     {
         if (i > 0)

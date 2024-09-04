@@ -31,8 +31,9 @@ public:
     point_2d getLocation();
     float getMass();
     color getColor();
+    void updatePos();
 
-    virtual void update(gravWell object);
+    virtual void updateVector(gravWell object);
     virtual void draw();
     virtual string getSpeedString();
 };
@@ -62,7 +63,8 @@ class dynamic : public body
 
     public:
         dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length, float _bounce, double _drag);
-        void update(gravWell object);
+        void updateVector(gravWell object);
+        void updatePos();
         void draw();
         string getSpeedString();
 };
@@ -73,7 +75,7 @@ class staticObj : public body
 
     public:
         staticObj(float _mass, point_2d _location, vector_2d _velocity, color _colour);
-        void update(gravWell object);
+        void updateVector(gravWell object);
         void draw();
         string getSpeedString();
 };
