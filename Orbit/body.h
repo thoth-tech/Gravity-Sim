@@ -31,9 +31,9 @@ public:
     point_2d getLocation();
     float getMass();
     color getColor();
-    void updatePos();
 
     virtual void updateVector(gravWell object);
+    virtual void updatePos();
     virtual void draw();
     virtual string getSpeedString();
 };
@@ -44,9 +44,12 @@ protected:
     vector<body *> bodies;
     vector<gravWell> nextFrame;
     vector<gravWell> currentFrame;
+    bool pause;
 
 public:
     gravManager(vector<body *> objects);
+    bool getPause();
+    void setPause(bool _pause);
     void addForce(gravWell grav);
     void update();
 };

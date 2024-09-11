@@ -110,6 +110,17 @@ void dynamic::updateVector(gravWell object)
     return;
 }
 
+void dynamic::updatePos()
+{
+    location.x = location.x + velocity.x;
+    location.y = location.y + velocity.y;
+    linePoints.insert(linePoints.begin(), location);
+    if (linePoints.size() > lineLen)
+    {
+        linePoints.resize(lineLen);
+    }
+}
+
 vector_2d dynamic::gravity(gravWell obj)
 {
     float angle = point_point_angle(location, obj.location);
@@ -132,11 +143,11 @@ vector_2d dynamic::drag()
 
 void dynamic::draw()
 {
-    linePoints.insert(linePoints.begin(), location);
-    if (linePoints.size() > lineLen)
-    {
-        linePoints.resize(lineLen);
-    }
+    ////linePoints.insert(linePoints.begin(), location);
+    //if (linePoints.size() > lineLen)
+    //{
+    //    linePoints.resize(lineLen);
+    //}
     for (int i = 0; i < linePoints.size(); i++)
     {
         if (i > 0)

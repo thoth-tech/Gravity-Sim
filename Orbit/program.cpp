@@ -35,11 +35,19 @@ int main()
         clickMass += mouse_wheel_scroll().y;
 
         draw_text(std::to_string(clickMass), COLOR_WHITE, 20, 50);
+        if(gravSystem.getPause())
+        {
+            draw_text("PAUSED", COLOR_WHITE, 20, 70);
+        }
 
         //update changes the velocity vectors based upon the locations and mass of the bodies
         if (mouse_down(LEFT_BUTTON))
         {
             gravSystem.addForce(gravWell(mouse_position(), clickMass));
+        }
+        if (key_typed(SPACE_KEY))
+        {
+            gravSystem.setPause(!gravSystem.getPause());
         }
         gravSystem.update();
 
