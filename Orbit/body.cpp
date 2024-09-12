@@ -25,7 +25,7 @@ float body::getMass()
     return mass;
 }
 
-void body::updateVector(gravWell object)
+void body::updateVector(gravWell object, double simSpeed)
 {
     return;
 }
@@ -45,7 +45,7 @@ color body::getColor()
     return colour;
 }
 
-void body::updatePos()
+void body::updatePos(double simSpeed)
 {
     location.x = location.x + velocity.x;
     location.y = location.y + velocity.y;
@@ -75,7 +75,7 @@ dynamic::dynamic(float _mass, point_2d _location, vector_2d _velocity, color _co
     dragCoef = _drag;
 }
 
-void dynamic::updateVector(gravWell object)
+void dynamic::updateVector(gravWell object, double simSpeed)
 {
     if (bounce > 0)
     {
@@ -103,17 +103,17 @@ void dynamic::updateVector(gravWell object)
         if ((location.x == object.location.x && location.y == object.location.y)) {}
         else 
         {
-            velocity = vector_add(velocity, gravity(object));
-            velocity = vector_add(velocity, drag());
+            velocity = vector_add(velocity, vector_multiply(gravity(object), simSpeed));
+            velocity = vector_add(velocity, vector_multiply(drag(), simSpeed));
         }
     }
     return;
 }
 
-void dynamic::updatePos()
+void dynamic::updatePos(double simSpeed)
 {
-    location.x = location.x + velocity.x;
-    location.y = location.y + velocity.y;
+    location.x += velocity.x * simSpeed;
+    location.y += velocity.y * simSpeed;
     linePoints.insert(linePoints.begin(), location);
     if (linePoints.size() > lineLen)
     {

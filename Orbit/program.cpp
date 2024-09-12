@@ -1,17 +1,9 @@
 #include "body.h"
 
-//TODO: factory interface, object manager class, observer, friction and relativity.
-
 int main()
 {
     open_window("newtonian gravity sim", SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    ////staticObj statObj = staticObj(300, point_at(800, 450), vector_from_angle(0, 0), COLOR_BRIGHT_GREEN);
-    //dynamic statObj = dynamic(600, point_at(800, 450), vector_from_angle(0, 0), COLOR_BRIGHT_GREEN, 100, 1, 0.05);
-    //dynamic dynObj1 = dynamic(2, point_at(800, 550), vector_from_angle(0, 1.5), COLOR_AZURE, 1000, 1, 0.05);
-    //dynamic dynObj2 = dynamic(20, point_at(800, 300), vector_from_angle(0, 1), COLOR_RED, 1000, 1, 0.05);
-    //0.0005*DENSITY;
-    //vector<body*> objects = {&statObj, &dynObj1, &dynObj2};
     bodyFactory* fac1 = new staticFac;
     bodyFactory* fac2 = new dynamicFac(0.5, 0.005, 1000);
 
@@ -27,6 +19,8 @@ int main()
 
     int clickMass = 0;
 
+    double simSpeed = 1;
+
     while (!key_typed(ESCAPE_KEY) && !quit_requested())
     {
         clear_screen(COLOR_BLACK);
@@ -35,10 +29,6 @@ int main()
         clickMass += mouse_wheel_scroll().y;
 
         draw_text(std::to_string(clickMass), COLOR_WHITE, 20, 50);
-        if(gravSystem.getPause())
-        {
-            draw_text("PAUSED", COLOR_WHITE, 20, 70);
-        }
 
         //update changes the velocity vectors based upon the locations and mass of the bodies
         if (mouse_down(LEFT_BUTTON))
@@ -49,8 +39,16 @@ int main()
         {
             gravSystem.setPause(!gravSystem.getPause());
         }
-        
-        gravSystem.update();
+        if (key_typed(UP_KEY))
+        {
+            simSpeed += 0.1;
+        }
+        if (key_typed(DOWN_KEY))
+        {
+            simSpeed -= 0.1;
+        }
+
+        gravSystem.update(simSpeed);
         refresh_screen(REFRESH_RATE);
     }
     return 0;
