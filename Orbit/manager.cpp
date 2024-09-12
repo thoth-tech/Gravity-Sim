@@ -4,7 +4,6 @@ gravManager::gravManager(vector<body *> objects)
 {
     bodies = objects;
     nextFrame.clear();
-    currentFrame.clear();
     pause = false;
 };
 
@@ -47,6 +46,10 @@ void gravManager::update()
         for (int i = 0; i < size(bodies); i++)
         {
             (*bodies[i]).draw();
+            point_2d textLocation = (*bodies[i]).getLocation();
+            textLocation.x += 10;
+            textLocation.y += 10;
+            draw_text((*bodies[i]).getSpeedString(), (*bodies[i]).getColor(), textLocation.x, textLocation.y);
         }
         nextFrame.clear();
     }

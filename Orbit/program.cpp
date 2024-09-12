@@ -49,16 +49,8 @@ int main()
         {
             gravSystem.setPause(!gravSystem.getPause());
         }
-        gravSystem.update();
-
-        //draw both changes the current position* of each body as well as drawing it
-        //*current position is changed in draw rather than update to prevent execution order from effecting the physics calculations
-        //for (int i = 0; i < size(objects); i++)
-        //{
-        //    draw_text((*objects[i]).getSpeedString(), (*objects[i]).getColor(), 20, 50 + (i * 20));
-        //    (*objects[i]).draw();
-        //}
         
+        gravSystem.update();
         refresh_screen(REFRESH_RATE);
     }
     return 0;

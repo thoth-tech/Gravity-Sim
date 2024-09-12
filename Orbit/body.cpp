@@ -81,23 +81,23 @@ void dynamic::updateVector(gravWell object)
     {
         if (location.x > SCREEN_WIDTH && velocity.x > 0)
         {
-            velocity.x = velocity.x * -bounce;
+            velocity.x = -velocity.x * bounce;
             velocity.y = velocity.y * bounce;
         }
         if (location.x < 0 && velocity.x < 0)
         {
-            velocity.x = velocity.x * -bounce;
+            velocity.x = -velocity.x * bounce;
             velocity.y = velocity.y * bounce;
         }
         if (location.y > SCREEN_HEIGHT && velocity.y > 0)
         {
             velocity.x = velocity.x * bounce;
-            velocity.y = velocity.y * -bounce;
+            velocity.y = -velocity.y * bounce;
         }
         if (location.y < 0 && velocity.y < 0)
         {
             velocity.x = velocity.x * bounce;
-            velocity.y = velocity.y * -bounce;
+            velocity.y = -velocity.y * bounce;
         }
 
         if ((location.x == object.location.x && location.y == object.location.y)) {}
@@ -143,11 +143,6 @@ vector_2d dynamic::drag()
 
 void dynamic::draw()
 {
-    ////linePoints.insert(linePoints.begin(), location);
-    //if (linePoints.size() > lineLen)
-    //{
-    //    linePoints.resize(lineLen);
-    //}
     for (int i = 0; i < linePoints.size(); i++)
     {
         if (i > 0)

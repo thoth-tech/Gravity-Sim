@@ -43,7 +43,6 @@ class gravManager
 protected:
     vector<body *> bodies;
     vector<gravWell> nextFrame;
-    vector<gravWell> currentFrame;
     bool pause;
 
 public:
@@ -52,6 +51,7 @@ public:
     void setPause(bool _pause);
     void addForce(gravWell grav);
     void update();
+    void create();
 };
 
 class dynamic : public body 
