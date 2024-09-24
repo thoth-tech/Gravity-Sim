@@ -35,6 +35,11 @@ void body::draw()
     return;
 }
 
+void body::drawVector(double size)
+{
+    return;
+}
+
 string body::getSpeedString() 
 {
     return "this should not show up";
@@ -151,6 +156,19 @@ void dynamic::draw()
         }
     }
     fill_circle(colour, circle_at(location, radius));
+}
+
+void dynamic::drawVector(double size)
+{
+    vector_2d modVelocity = vector_multiply(velocity, size);
+    double direction = vector_angle(modVelocity);
+    line velocityDir = line_from(location, vector_add(modVelocity, vector_from_angle(direction, radius)));
+    
+    draw_line(colour, velocityDir);
+    draw_line(colour, line_from(velocityDir.end_point, vector_from_angle(direction + 135, sqrt(vector_magnitude(modVelocity)))));
+    draw_line(colour, line_from(velocityDir.end_point, vector_from_angle(direction - 135, sqrt(vector_magnitude(modVelocity)))));
+    draw_line(colour, line_from(velocityDir.start_point, vector_from_angle(direction + 90, 2)));
+    draw_line(colour, line_from(velocityDir.start_point, vector_from_angle(direction - 90, 2)));
 }
 
 string dynamic::getSpeedString()

@@ -36,7 +36,7 @@ void gravManager::update(double _simSpeed)
     {
         if (simSpeed > 0)
         {
-            simSpeed -= 0.05;
+            simSpeed -= 0.025;
             draw_text("PAUSING", COLOR_WHITE, 20, 80);
         }
         if (simSpeed <= 0)
@@ -58,14 +58,14 @@ void gravManager::update(double _simSpeed)
     }
     if(simSpeed != 0)
     {
-        for (int i = 0; i < size(bodies); i++)
+        for (int i = 0; i < bodies.size(); i++)
         {
             addForce(gravWell((*bodies[i]).getLocation(), (*bodies[i]).getMass()));
         }
 
-        for (int i = 0; i < size(bodies); i++)
+        for (int i = 0; i < bodies.size(); i++)
         {
-            for (int j = 0; j < size(nextFrame); j++)
+            for (int j = 0; j < nextFrame.size(); j++)
             {
                 (*bodies[i]).updateVector(nextFrame[j], simSpeed);
             }
@@ -76,9 +76,10 @@ void gravManager::update(double _simSpeed)
     }
     else
     {
-        for (int i = 0; i < size(bodies); i++)
+        for (int i = 0; i < bodies.size(); i++)
         {
             (*bodies[i]).draw();
+            (*bodies[i]).drawVector(10);
             point_2d textLocation = (*bodies[i]).getLocation();
             textLocation.x += 10;
             textLocation.y += 10;

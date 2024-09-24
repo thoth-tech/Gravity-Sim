@@ -36,6 +36,7 @@ public:
     virtual void updatePos(double simSpeed);
     virtual void draw();
     virtual string getSpeedString();
+    virtual void drawVector(double size);
 };
 
 class gravManager
@@ -72,6 +73,7 @@ class dynamic : public body
         void updateVector(gravWell object, double simSpeed);
         void updatePos(double simSpeed);
         void draw();
+        void drawVector(double size);
         string getSpeedString();
 };
 
