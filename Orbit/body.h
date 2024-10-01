@@ -32,10 +32,11 @@ public:
     float getMass();
     color getColor();
 
-    virtual void updateVector(gravWell object);
-    virtual void updatePos();
+    virtual void updateVector(gravWell object, double simSpeed);
+    virtual void updatePos(double simSpeed);
     virtual void draw();
     virtual string getSpeedString();
+    virtual void drawVector(double size);
 };
 
 class gravManager
@@ -43,15 +44,18 @@ class gravManager
 protected:
     vector<body *> bodies;
     vector<gravWell> nextFrame;
-    vector<gravWell> currentFrame;
     bool pause;
+    double simSpeed;
+    double baseSpeed;
 
 public:
-    gravManager(vector<body *> objects);
+    gravManager(vector<body *> objects, double _simSpeed = 1);
     bool getPause();
     void setPause(bool _pause);
     void addForce(gravWell grav);
     void update();
+    void update(double simSpeed);
+    void create();
 };
 
 class dynamic : public body 
@@ -66,9 +70,10 @@ class dynamic : public body
 
     public:
         dynamic(float _mass, point_2d _location, vector_2d _velocity, color _colour, int line_length, float _bounce, double _drag);
-        void updateVector(gravWell object);
-        void updatePos();
+        void updateVector(gravWell object, double simSpeed);
+        void updatePos(double simSpeed);
         void draw();
+        void drawVector(double size);
         string getSpeedString();
 };
 
